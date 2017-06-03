@@ -1,0 +1,26 @@
+{
+  "name": "chirkut",
+  "version": "1.0.0",
+  "description": "CHIRKUT API, chirkut service",
+  "main": "chirkut.js",
+  "private": true,
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "dotenv": "~2.0",
+    "request": "^2.72.0",
+    "restify": "~4.0",
+    "restify-url-semver": "~1.0",
+    "uuid-v4": "~0.1",
+    "moment": "~2.*",
+    "when": "~3.7",
+    "winston": "~2.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.0.2",
+    "supertest": "^2.0.0",
+    "js-base64": "^2.1.9"
+  }
+}

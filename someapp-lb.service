@@ -1,0 +1,11 @@
+[Unit]
+Description=someapp-lb
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill someapp-lb
+ExecStartPre=-/usr/bin/docker rm someapp-lb
+ExecStartPre=/usr/bin/docker pull zakirhyder/nginx-lb
+ExecStart=/usr/bin/sh -c "/usr/bin/docker run -e SERVICE_NAME=someapp -e ETCD=\"$(ifconfig docker0 | awk '/\<inet\>/ { print $2}'):2379\" -P --name someapp-lb zakirhyder/nginx-lb"
+ExecStop=/usr/bin/docker stop someapp-lb

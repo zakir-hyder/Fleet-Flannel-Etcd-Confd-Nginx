@@ -1,0 +1,11 @@
+[Unit]
+Description=someapp%i
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill someapp%i
+ExecStartPre=-/usr/bin/docker rm someapp%i
+ExecStartPre=/usr/bin/docker pull zakirhyder/nodejs-chirkut
+ExecStart=/usr/bin/docker run -e APPNAME=someapp%i --name someapp%i -P zakirhyder/nodejs-chirkut
+ExecStop=/usr/bin/docker stop someapp%i

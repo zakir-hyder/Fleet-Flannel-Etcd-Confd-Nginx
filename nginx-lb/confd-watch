@@ -1,0 +1,21 @@
+#!/bin/bash
+
+sed -i.bak "s/appname/${SERVICE_NAME}/g" /etc/confd/conf.d/nginx.toml
+sed -i.bak "s/appname/${SERVICE_NAME}/g" /etc/confd/templates/nginx.tmpl
+
+set -eo pipefail
+
+echo "[nginx] booting container. ETCD: $ETCD"
+
+until confd -onetime -backend etcd -node $ETCD -config-file /etc/confd/conf.d/nginx.toml; do
+    echo "[nginx] waiting for confd to create initial nginx conf"
+    sleep 5
+done
+
+confd -interval 10 -backend etcd -node $ETCD -config-file /etc/confd/conf.d/nginx.toml &
+echo "[nginx] confd watching etcd for nginx chnages"
+
+echo "[nginx] nginx starting"
+service nginx start
+
+tail -f /var/log/nginx/*.log
